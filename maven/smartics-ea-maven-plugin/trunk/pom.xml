@@ -101,7 +101,7 @@
     <twitterId>smartics</twitterId>
     <!-- <sonarId>${project.groupId}:${project.artifactId}</sonarId> -->
 
-    <repo.server>http://>www.smartics.eu/nexus</repo.server>
+    <repo.server>http://www.smartics.eu/nexus</repo.server>
     <repo.server.prefix>${repo.server}/content</repo.server.prefix>
     <repo.server.upload>dav:${repo.server.prefix}/repositories</repo.server.upload>
 
