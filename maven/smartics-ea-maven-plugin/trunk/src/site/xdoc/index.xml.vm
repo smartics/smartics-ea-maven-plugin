@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2013-2014 smartics, Kronseder & Reiner GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<document>
+    <head profile="http://dublincore.org/documents/dcq-html/">
+      <title>Introduction</title>
+
+      <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+      <link rel="DC.rights copyright" href="license.html" />
+
+      <meta name="keywords" content="Sparx Systems, Enterprise Architect, maven plugin, maven"/>
+      <meta name="description" content="Homepage of the smartics EA Maven plugin. This plugin plugin exports images from a local Enterprise Architect installation."/>
+      <meta name="author" content="smartics"/>
+
+      <meta name="DC.title" content="smartics-ea-maven-plugin"/>
+      <meta name="DC.creator" content="smartics"/>
+      <meta name="DC.subject" content="Homepage of the smartics EA Maven plugin"/>
+      <meta name="DC.description" content="Homepage of the smartics EA Maven plugin. This plugin plugin exports images from a local Enterprise Architect installation."/>
+      <meta name="DC.publisher" content="smartics"/>
+      <meta name="DC.rights" content="Copyright 2014 smartics"/>
+    </head>
+	<body>
+    <section name="Introduction">
+
+      <subsection name="Overview">
+      <p>
+        This <a href="http://maven.apache.org/">Maven</a> plugin exports images
+        and the HTML site from your
+        <a href="http://www.sparxsystems.com/products/ea/index.html">Enterprise Architect</a>
+        installation.
+      </p>
+      </subsection>
+
+      <subsection name="Requirements">
+      <p>
+        Please note that you need a local installation of the Enterprise Architect,
+        running a 32 bit Java VM with the EA-DLL on the library path.
+        For information on how to configure your environment, please refer to
+        <a href="http://www.sparxsystems.com/enterprise_architect_user_guide/11/automation_and_scripting/setup.html">Connect to the Interface</a>
+        at <a href="http://www.sparxsystems.com">Sparx Systems</a>.
+      </p>
+      </subsection>
+
+      <subsection name="Usage">
+        <p>
+          Use the following to export the images for your model as PNG files.
+        </p>
+          <source><![CDATA[<build>
+  <plugins>
+    <plugin>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>${project.artifactId}</artifactId>
+      <version>${project.version}</version>
+      <executions>
+        <execution>
+          <id>ea-export</id>
+          <goals>
+            <goal>export</goal>
+          </goals>
+          <phase>pre-site</phase>
+          <configuration>
+            <eaProjectRepositoryFile>path/to/your/model.eap</eaProjectRepositoryFile>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>]]></source>
+        <p>
+          Per default the HTML site is not generated. Add this to your configuration
+          to generate it.
+        </p>
+        <source><![CDATA[<generateHtmlSite>true</generateHtmlSite>]]></source>
+      </subsection>
+
+
+    </section>
+  </body>
+</document>
