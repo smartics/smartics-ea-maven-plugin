@@ -17,7 +17,7 @@
     Currently we simply export images of the model.
   </description>
   <url>${weburl}</url>
-  <inceptionYear>2013</inceptionYear>
+  <inceptionYear>2014</inceptionYear>
   <organization>
     <name>smartics</name>
     <url>http://www.smartics.de/</url>
@@ -474,6 +474,14 @@
           </execution>
         </executions>
         <configuration>
+          <strictCheck>true</strictCheck>
+          <header>src/etc/header.txt</header>
+          <headerDefinitions>
+            <headerDefinition>src/etc/javadoc.xml</headerDefinition>
+          </headerDefinitions>
+          <properties>
+            <year>${build.copyright.year}</year>
+          </properties>
           <excludes>
             <exclude>**/.externalToolBuilders/**</exclude>
             <exclude>**/.fbprefs</exclude>
@@ -491,6 +499,13 @@
             <exclude>**/*.eap</exclude>
             <exclude>**/*.dll</exclude>
           </excludes>
+          <mapping>
+            <!--  Unfortunately we use xml.vm extensions to filter xdoc pages.
+                  The tag xml.vm is not recognized, so we simply override the
+                  vm tag. -->
+            <vm>XML_STYLE</vm>
+            <jnlp>XML_STYLE</jnlp>
+          </mapping>
         </configuration>
       </plugin>
     </plugins>
