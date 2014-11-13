@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.smartics.maven.plugin</groupId>
+  <artifactId>export-html-report</artifactId>
+  <version>testing</version>
+  <packaging>pom</packaging>
+
+  <name>${project.artifactId}</name>
+  <description>
+    Tests exporting a simple model from an EAP file.
+  </description>
+  <url>http://www.smartics.de/test</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>de.smartics.maven.plugin</groupId>
+        <artifactId>smartics-ea-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <executions>
+          <execution>
+            <id>ea-export</id>
+            <goals>
+              <goal>export</goal>
+            </goals>
+            <phase>pre-site</phase>
+            <configuration>
+              <eaProjectRepositoryFile>${basedir}/input/test.eap</eaProjectRepositoryFile>
+              <!-- <eaPackageGuid>{112549AE-E0BE-4ad7-95DD-4750B0D76EE7}</eaPackageGuid> -->
+              <generateHtmlSite>true</generateHtmlSite>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
