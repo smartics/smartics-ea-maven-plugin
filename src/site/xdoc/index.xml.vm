@@ -36,24 +36,37 @@
     </head>
 	<body>
     <section name="Introduction">
-
       <subsection name="Overview">
-      <p>
-        This <a href="http://maven.apache.org/">Maven</a> plugin exports images
-        and the HTML site from your
-        <a href="http://www.sparxsystems.com/products/ea/index.html">Enterprise Architect</a>
-        installation.
-      </p>
+        <p>
+          This <a href="http://maven.apache.org/">Maven</a> plugin exports images
+          and the HTML site from your
+          <a href="http://www.sparxsystems.com/products/ea/index.html">Enterprise Architect</a>
+          installation.
+        </p>
       </subsection>
 
       <subsection name="Requirements">
-      <p>
-        Please note that you need a local installation of the Enterprise Architect,
-        running a 32 bit Java VM with the EA-DLL on the library path.
-        For information on how to configure your environment, please refer to
-        <a href="http://www.sparxsystems.com/enterprise_architect_user_guide/11/automation_and_scripting/setup.html">Connect to the Interface</a>
-        at <a href="http://www.sparxsystems.com">Sparx Systems</a>.
-      </p>
+        <p>
+          Please note that you need a local installation of the Enterprise Architect,
+          running a 32 bit Java VM with the EA-DLL on the library path.
+          For information on how to configure your environment, please refer to
+          <a href="http://www.sparxsystems.com/enterprise_architect_user_guide/11/automation_and_scripting/setup.html">Connect to the Interface</a>
+          at <a href="http://www.sparxsystems.com">Sparx Systems</a>.
+        </p>
+        <p>
+          We are not allowed to publish the JAR required to access the
+          Enterprise Architect. Therefore please make the JAR, provided by your
+          Enterprise Architect installation available by these coordinates on
+          your platform.:
+        </p>
+        <source><![CDATA[<groupId>de.smartics.sparxsystems</groupId>
+<artifactId>eaapi</artifactId>
+<version>11.1.1112</version>]]></source>
+        <p>
+          Please note that we have choosen a groupId prefixed by <code>de.smartics</code>
+          to not interfere with the namespace of <code>com.sparxsystems</code>.
+          The referenced artifact is created and copyrighted by <i>Sparx Systems</i>.
+        </p>
       </subsection>
 
       <subsection name="Usage">
