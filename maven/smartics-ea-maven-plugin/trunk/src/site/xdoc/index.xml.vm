@@ -53,20 +53,6 @@
           <a href="http://www.sparxsystems.com/enterprise_architect_user_guide/11/automation_and_scripting/setup.html">Connect to the Interface</a>
           at <a href="http://www.sparxsystems.com">Sparx Systems</a>.
         </p>
-        <p>
-          We are not allowed to publish the JAR required to access the
-          Enterprise Architect. Therefore please make the JAR, provided by your
-          Enterprise Architect installation available by these coordinates on
-          your platform.:
-        </p>
-        <source><![CDATA[<groupId>de.smartics.sparxsystems</groupId>
-<artifactId>eaapi</artifactId>
-<version>11.1.1112</version>]]></source>
-        <p>
-          Please note that we have choosen a groupId prefixed by <code>de.smartics</code>
-          to not interfere with the namespace of <code>com.sparxsystems</code>.
-          The referenced artifact is created and copyrighted by <i>Sparx Systems</i>.
-        </p>
       </subsection>
 
       <subsection name="Usage">
@@ -91,6 +77,13 @@
           </configuration>
         </execution>
       </executions>
+      <dependencies>
+        <dependency>
+          <groupId>de.smartics.sparxsystems</groupId>
+          <artifactId>eaapi</artifactId>
+          <version>11.1.1112</version>
+        </dependency>
+      </dependencies>
     </plugin>
   </plugins>
 </build>]]></source>
@@ -101,7 +94,29 @@
         <source><![CDATA[<generateHtmlSite>true</generateHtmlSite>]]></source>
       </subsection>
 
-
+      <subsection name="JAR provided by Enterprise Architect">
+        <p>
+          We are not allowed to publish the JAR required to access the
+          Enterprise Architect. Therefore you have to provide this JAR file
+          as a dependency in your configuration by yourself.
+        </p>
+        <source><![CDATA[<groupId>de.smartics.sparxsystems</groupId>
+<artifactId>eaapi</artifactId>
+<version>11.1.1112</version>]]></source>
+        <p>
+          Please note that we have choosen a groupId prefixed by <code>de.smartics</code>
+          to not interfere with the namespace of <code>com.sparxsystems</code>.
+          The referenced artifact is created and copyrighted by <i>Sparx Systems</i>.
+        </p>
+        <p>
+          Note that the version number used above is the version the plugin
+          has been compiled with. Since there is no version information in the
+          JAR we choosed the version of the Enterprise Architect the JAR is
+          bundled with. It is very likely that other versions will also be
+          compatible with this plugin. So you are probably not forced to use
+          this exact version.
+        </p>
+      </subsection>
     </section>
   </body>
 </document>
