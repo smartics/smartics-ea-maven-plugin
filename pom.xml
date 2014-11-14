@@ -56,12 +56,12 @@
       <organizationUrl>http://www.smartics.de/</organizationUrl>
     </developer>
   </developers>
-<!--
+
   <issueManagement>
-    <system>github</system>
-    <url>https://github.com/smartics/smartics-jboss-modules-maven-plugin/issues</url>
+    <system>JIRA</system>
+    <url>https://www.smartics.eu/jira/browse/EAMP</url>
   </issueManagement>
- -->
+
 <!--
   <ciManagement>
     <system>hudson</system>
