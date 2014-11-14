@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2014 smartics, Kronseder & Reiner GmbH
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<document>
+    <head profile="http://dublincore.org/documents/dcq-html/">
+      <title>Introduction</title>
+
+      <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"/>
+      <link rel="DC.rights copyright" href="license.html" />
+
+      <meta name="keywords" content="Sparx Systems, Enterprise Architect, maven plugin, maven"/>
+      <meta name="description" content="Report homepage of the smartics EA Maven plugin. This plugin plugin exports images from a local Enterprise Architect installation."/>
+      <meta name="author" content="smartics"/>
+
+      <meta name="DC.title" content="smartics-ea-maven-plugin"/>
+      <meta name="DC.creator" content="smartics"/>
+      <meta name="DC.subject" content="Report homepage of the smartics EA Maven plugin"/>
+      <meta name="DC.description" content="Report homepage of the smartics EA Maven plugin. This plugin plugin exports images from a local Enterprise Architect installation."/>
+      <meta name="DC.publisher" content="smartics"/>
+      <meta name="DC.rights" content="Copyright 2014 smartics"/>
+    </head>
+	<body>
+    <section name="Introduction">
+      <subsection name="Overview">
+        <p>
+          This <a href="http://maven.apache.org/">Maven</a> plugin exports images
+          and the HTML site from your
+          <a href="http://www.sparxsystems.com/products/ea/index.html">Enterprise Architect</a>
+          installation.
+        </p>
+        <p>
+          This site provides generated reports for the project. For detailed
+          information please visit the
+          <a href="${wiki-url}/display/EAMP/smartics+Enterprise+Architect+Maven+Plugin">project's
+          homepage</a>.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,603 @@
+<?xml version="1.0"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.smartics.maven.plugin</groupId>
+  <artifactId>smartics-ea-maven-plugin</artifactId>
+  <version>1.0.0-beta-1</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>${project.artifactId}</name>
+  <description>
+    Interacts with a model specified in sparx systems' Enterprise Architect.
+    Currently we simply export images of the model.
+  </description>
+  <url>${weburl}</url>
+  <inceptionYear>2014</inceptionYear>
+  <organization>
+    <name>smartics</name>
+    <url>http://www.smartics.de/</url>
+  </organization>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+      <comments>Copyright 2014 Kronseder &amp; Reiner GmbH, smartics</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>robert.reiner</id>
+      <name>Robert Reiner</name>
+      <url>
+        http://www.smartics.de/about-us/robert-reiner
+      </url>
+      <organization>
+        Kronseder &amp; Reiner GmbH, smartics
+      </organization>
+      <organizationUrl>http://www.smartics.de/</organizationUrl>
+    </developer>
+    <developer>
+      <id>anton.kronseder</id>
+      <name>Anton Kronseder</name>
+      <url>
+        http://www.smartics.de/about-us/anton-kronseder
+      </url>
+      <organization>
+        Kronseder &amp; Reiner GmbH, smartics
+      </organization>
+      <organizationUrl>http://www.smartics.de/</organizationUrl>
+    </developer>
+  </developers>
+
+  <issueManagement>
+    <system>JIRA</system>
+    <url>https://www.smartics.eu/jira/browse/EAMP</url>
+  </issueManagement>
+
+<!--
+  <ciManagement>
+    <system>hudson</system>
+    <url>http://www.smartics.eu/hudson</url>
+  </ciManagement>
+ -->
+
+  <scm>
+    <connection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-1</connection>
+    <developerConnection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-1</developerConnection>
+    <url>https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-1</url>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>${project-visibility}</id>
+      <name>internal smartics release repository</name>
+      <url>${repo.server.upload}/${project-visibility}</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>${project-visibility}-snapshot</id>
+      <name>internal smartics snapshot repository</name>
+      <url>${repo.server.upload}/${project-visibility}-snapshot</url>
+    </snapshotRepository>
+    <site>
+      <id>${project-visibility}-site</id>
+      <name>documentation site</name>
+      <url>${site.root}/${project.groupId}/${project.artifactId}/${project.version}</url>
+    </site>
+  </distributionManagement>
+
+  <properties>
+    <project-visibility>public</project-visibility>
+    <donationId>ZNFSBTAQJ49HA</donationId>
+    <!-- <ohlohProjectId>710977</ohlohProjectId> -->
+    <twitterId>smartics</twitterId>
+    <!-- <sonarId>${project.groupId}:${project.artifactId}</sonarId> -->
+
+    <repo.server>http://www.smartics.eu/nexus</repo.server>
+    <repo.server.prefix>${repo.server}/content</repo.server.prefix>
+    <repo.server.upload>dav:${repo.server.prefix}/repositories</repo.server.upload>
+
+    <site.root>scp://www.smartics.eu/home/smartics/public_html/${project-visibility}</site.root>
+
+    <!-- The following properties are accessible from site documentation and therefore contain no dots. -->
+    <webroot>https://www.smartics.eu</webroot>
+    <weburl>${webroot}/${project.groupId}/${project.artifactId}/${project.version}</weburl>
+    <scm-weburl>https://www.smartics.eu/svn/public</scm-weburl> <!-- No subdir ${project-visibility} currently. -->
+    <!--
+    <ci-url>http://www.smartics.eu/hudson</ci-url>
+    <sonar-url>http://www.smartics.eu/sonar</sonar-url>
+    <sonar-url-project>${sonar-url}/dashboard/index/${sonarId}</sonar-url-project>
+     -->
+    <repo-url>https://www.smartics.eu/nexus</repo-url> <!-- HTTPs -->
+    <repo-download-url>${repo-url}/service/local/artifact/maven/redirect</repo-download-url>
+
+    <webroot-projects>http://www.smartics.de/projects</webroot-projects>
+    <wiki-url>https://www.smartics.eu/confluence</wiki-url>
+
+    <!-- Project settings -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Plugin Versions -->
+    <maven-fluido-smartics-skin_version>2.0.4</maven-fluido-smartics-skin_version>
+
+    <hudson-maven-plugin.version>0.2.8</hudson-maven-plugin.version>
+    <config-smartics-hudson.version>0.3.0</config-smartics-hudson.version>
+
+    <buildmetadata-maven-plugin.version>1.4.0</buildmetadata-maven-plugin.version>
+
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+    <maven-dependency-plugin.version>2.8</maven-dependency-plugin.version>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+    <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+    <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+    <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
+    <maven-install-plugin.version>2.5.1</maven-install-plugin.version>
+    <maven-scm-plugin.version>1.8.1</maven-scm-plugin.version>
+    <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+    <versions-maven-plugin.version>2.1</versions-maven-plugin.version>
+    <maven-site-plugin.version>3.3</maven-site-plugin.version>
+    <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+
+    <!--  Dependency versions -->
+    <maven.version>3.1.0</maven.version>
+    <maven.project.version>2.2.1</maven.project.version>
+    <maven-plugin-plugin.version>3.2</maven-plugin-plugin.version>
+    <aether.version>0.9.0.M2</aether.version>
+  </properties>
+
+  <dependencies>
+    <!-- ... business ..................................................... -->
+
+    <dependency>
+      <groupId>de.smartics.sparxsystems</groupId>
+      <artifactId>eaapi</artifactId>
+      <version>11.1.1112</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--  ... maven ....................................................... -->
+
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.2</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- ... other ........................................................ -->
+
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom2</artifactId>
+      <version>2.0.5</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven-dependency-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven-deploy-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-webdav</artifactId>
+              <version>1.0-beta-2</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+          <configuration>
+            <index>true</index>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+              <manifestEntries>
+                <Implementation-SCM-Revision-Number>${build.scmRevision.id}</Implementation-SCM-Revision-Number>
+                <Implementation-SCM-Revision-Date>${build.scmRevision.date}</Implementation-SCM-Revision-Date>
+                <Implementation-URL>${project.url}</Implementation-URL>
+                <Implementation-Date>${build.date}</Implementation-Date>
+                <Implementation-Timestamp>${build.timestamp.millis}</Implementation-Timestamp>
+                <Implementation-DatePattern>${build.date.pattern}</Implementation-DatePattern>
+                <Implementation-Full-Version>${build.version.full}</Implementation-Full-Version>
+                <Built-OS>${os.name} / ${os.arch} / ${os.version}</Built-OS>
+                <Built-By>${build.user}</Built-By>
+                <Maven-Version>${build.maven.version}</Maven-Version>
+                <Java-Version>${java.version}</Java-Version>
+                <Java-Vendor>${java.vendor}</Java-Vendor>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven-install-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <configuration>
+            <releaseProfiles>release</releaseProfiles>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-plugin</artifactId>
+          <version>${maven-scm-plugin.version}</version>
+          <configuration>
+            <connectionType>developerConnection</connectionType>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <!-- add support for ssh/scp -->
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>1.0</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <id>attach-descriptor</id>
+              <goals>
+                <goal>attach-descriptor</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <locales>en</locales>
+            <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>versions-maven-plugin</artifactId>
+          <version>${versions-maven-plugin.version}</version>
+        </plugin>
+
+        <!--
+          This configuration is for synchronizing Eclipse configuration only.
+            https://docs.sonatype.org/display/M2ECLIPSE/Customizable+build+lifecycle+mapping+for+m2e+extensions+developers
+
+          No plugin involved:
+            http://dev.eclipse.org/mhonarc/lists/m2e-users/msg00657.html
+          -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>de.smartics.maven.plugin</groupId>
+                    <artifactId>buildmetadata-maven-plugin</artifactId>
+                    <versionRange>[0.0.0,)</versionRange>
+                    <goals>
+                      <goal>provide-buildmetadata</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.redhat.rcm.maven.plugin</groupId>
+                    <artifactId>buildmetadata-maven-plugin</artifactId>
+                    <versionRange>[0.0.0,)</versionRange>
+                    <goals>
+                      <goal>provide-buildmetadata</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <versionRange>[1.0,)</versionRange>
+                    <goals>
+                      <goal>enforce</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[0.0.0,)</versionRange>
+                    <goals>
+                      <goal>copy-dependencies</goal>
+                      <goal>unpack</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-toolchains-plugin</artifactId>
+                    <versionRange>[0.0.0,)</versionRange>
+                    <goals>
+                      <goal>toolchain</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>de.smartics.maven.plugin</groupId>
+                    <artifactId>smartics-jboss-modules-maven-plugin</artifactId>
+                    <versionRange>[0.0.0,)</versionRange>
+                    <goals>
+                      <goal>create-modules-archive</goal>
+                      <goal>index</goal>
+                      <goal>jandex</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>de.smartics.maven.plugin</groupId>
+        <artifactId>buildmetadata-maven-plugin</artifactId>
+        <version>${buildmetadata-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>provide-buildmetadata</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <buildDatePattern>dd.MM.yyyy HH:mm:ss</buildDatePattern>
+          <remoteVersion>origin/master</remoteVersion>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${maven-plugin-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>help-goal</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>${maven-license-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <strictCheck>true</strictCheck>
+          <header>src/etc/header.txt</header>
+          <headerDefinitions>
+            <headerDefinition>src/etc/javadoc.xml</headerDefinition>
+          </headerDefinitions>
+          <properties>
+            <year>${build.copyright.year}</year>
+          </properties>
+          <excludes>
+            <exclude>**/.externalToolBuilders/**</exclude>
+            <exclude>**/.fbprefs</exclude>
+            <exclude>**/.pmd</exclude>
+            <exclude>**/.checkstyle</exclude>
+            <exclude>**/.ruleset</exclude>
+            <exclude>**/COPYRIGHT.txt</exclude>
+            <exclude>**/LICENSE.txt</exclude>
+            <exclude>**/LICENSE-*</exclude>
+            <exclude>**/*.xcf</exclude>
+            <exclude>**/*.uml</exclude>
+            <exclude>**/*.umlusc</exclude>
+            <exclude>**/javadoc.xml</exclude>
+            <exclude>**/header.txt</exclude>
+            <exclude>**/*.eap</exclude>
+            <exclude>**/*.dll</exclude>
+          </excludes>
+          <mapping>
+            <!--  Unfortunately we use xml.vm extensions to filter xdoc pages.
+                  The tag xml.vm is not recognized, so we simply override the
+                  vm tag. -->
+            <vm>XML_STYLE</vm>
+            <jnlp>XML_STYLE</jnlp>
+          </mapping>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven-project-info-reports-plugin.version}</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>cim</report>
+              <report>dependencies</report>
+              <report>dependency-convergence</report>
+              <report>dependency-management</report>
+              <!-- <report>distribution-management</report> -->
+              <report>index</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <!-- <report>mailing-list</report> -->
+              <report>modules</report>
+              <report>plugin-management</report>
+              <report>project-team</report>
+              <report>scm</report>
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+
+      <plugin>
+        <groupId>de.smartics.maven.plugin</groupId>
+        <artifactId>buildmetadata-maven-plugin</artifactId>
+        <version>${buildmetadata-maven-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${maven-plugin-plugin.version}</version>
+        <configuration>
+          <requirements>
+            <maven>3.1</maven>
+          </requirements>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <profile>
+      <id>it</id>
+      <!-- mvn -Pit integration-test -Dinvoker.test=export-html-report -->
+      <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <version>1.8</version>
+            <configuration>
+              <debug>true</debug>
+              <projectsDirectory>src/it</projectsDirectory>
+              <settingsFile>src/it/settings.xml</settingsFile>
+
+              <pomIncludes>
+                <pomInclude>*/pom.xml</pomInclude>
+              </pomIncludes>
+
+              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+              <preBuildHookScript>setup</preBuildHookScript>
+              <postBuildHookScript>validate</postBuildHookScript>
+
+              <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+              </goals>
+            </configuration>
+            <executions>
+              <execution>
+                <id>integration-test</id>
+                <goals>
+                  <goal>install</goal>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
