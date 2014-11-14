@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
+import org.codehaus.plexus.util.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import org.sparx.EnumXMIType;
 import org.sparx.Project;
 
 /**
@@ -37,13 +37,31 @@ final class Ea
 
   // --- constants ------------------------------------------------------------
 
+  /**
+   * The name of the XML element that contains the GUID of an EA entity.
+   */
+  private static final String XML_ELEMENT_NAME_GUID = "GUID";
+
+  /**
+   * The name of the XML element that contains the name of an EA entity.
+   */
+  private static final String XML_ELEMENT_NAME_NAME = "Name";
+
   // --- members --------------------------------------------------------------
 
   private final Log log;
 
+  private final String eapFile;
+
   private final Project project;
 
   private final String imagesTargetPath;
+
+  private final String xmlEncoding;
+
+  private final XmiPackageExport xmiPackageExportConfig;
+
+  private final boolean verbose;
 
   // ****************************** Initializer *******************************
 
@@ -52,11 +70,17 @@ final class Ea
   /**
    * Default constructor.
    */
-  Ea(final Log log, final Project project, final String imagesTargetPath)
+  Ea(final Log log, final String eapFile, final Project project,
+      final String imagesTargetPath, final String xmlEncoding,
+      final XmiPackageExport xmiPackageExportConfig, final boolean verbose)
   {
     this.log = log;
+    this.eapFile = eapFile;
     this.project = project;
     this.imagesTargetPath = imagesTargetPath;
+    this.xmlEncoding = xmlEncoding;
+    this.xmiPackageExportConfig = xmiPackageExportConfig;
+    this.verbose = verbose;
   }
 
   // ****************************** Inner Classes *****************************
@@ -73,20 +97,30 @@ final class Ea
   {
     for (final EaEntity eaProject : readProjects())
     {
+      if (verbose) log.info("Start export of project " + eaProject);
       for (final EaEntity eaPackage : readPackages(eaProject))
       {
         exportImages(eaPackage);
       }
+      if (verbose) log.info("End export of project " + eaProject);
     }
   }
 
   private void exportImages(final EaEntity eaPackage)
   {
     final String packageGuid = eaPackage.getGuid();
-    log.info("  Start export of package GUID=" + packageGuid);
-    project.ExportPackageXMI(packageGuid, EnumXMIType.xmiEADefault, 2, 3, 0, 0,
-        imagesTargetPath);
-    log.info("  End of package export   GUID=" + packageGuid);
+
+    if (verbose) log.info("  Start export of package " + eaPackage);
+
+    project.ExportPackageXMIEx(packageGuid,
+        xmiPackageExportConfig.getXmiType(),
+        xmiPackageExportConfig.getDiagramXml(),
+        xmiPackageExportConfig.getDiagramImage(),
+        xmiPackageExportConfig.getFormatXml(),
+        xmiPackageExportConfig.getUseDtd(), imagesTargetPath,
+        xmiPackageExportConfig.getXmiFlags());
+
+    if (verbose) log.info("  End export of package " + eaPackage);
   }
 
   List<EaEntity> readProjects() throws MojoExecutionException
@@ -96,17 +130,37 @@ final class Ea
     {
       final SAXBuilder builder = new SAXBuilder();
       final InputStream in =
-          new ByteArrayInputStream(projectXml.getBytes("UTF-8"));
+          new ByteArrayInputStream(projectXml.getBytes(xmlEncoding));
       final Document document = builder.build(in);
       final Element root = document.getRootElement();
 
       final List<EaEntity> projects = new ArrayList<EaEntity>();
       for (final Element projectElement : root.getChildren("Project"))
       {
-        final String guid = projectElement.getChildText("GUID");
-        final String name = projectElement.getChildText("Name");
+        final String guid = projectElement.getChildText(XML_ELEMENT_NAME_GUID);
+        final String name = projectElement.getChildText(XML_ELEMENT_NAME_NAME);
+
+        if (StringUtils.isBlank(guid))
+        {
+          log.warn("Project "
+                   + (StringUtils.isNotBlank(name) ? "'" + name + "'" : "")
+                   + "without a GUID. Skipping.");
+          continue;
+        }
+        if (StringUtils.isBlank(name))
+        {
+          log.warn("Project "
+                   + (StringUtils.isNotBlank(guid) ? "'" + guid + "'" : "")
+                   + "without a name. Continue without name.");
+        }
+
         final EaEntity project = new EaEntity(guid, name);
         projects.add(project);
+      }
+
+      if (projects.isEmpty())
+      {
+        log.warn("No projects found! Nothing to export from " + eapFile);
       }
 
       return projects;
@@ -118,33 +172,54 @@ final class Ea
     }
   }
 
-  private List<EaEntity> readPackages(final EaEntity project)
+  private List<EaEntity> readPackages(final EaEntity eaProject)
     throws MojoExecutionException
   {
-    final String packagesXml = this.project.EnumPackages(project.getGuid());
+    final String packagesXml = this.project.EnumPackages(eaProject.getGuid());
     try
     {
       final SAXBuilder builder = new SAXBuilder();
       final InputStream in =
-          new ByteArrayInputStream(packagesXml.getBytes("UTF-8"));
+          new ByteArrayInputStream(packagesXml.getBytes(xmlEncoding));
       final Document document = builder.build(in);
       final Element root = document.getRootElement();
 
       final List<EaEntity> packages = new ArrayList<EaEntity>();
       for (final Element packageElement : root.getChildren("Package"))
       {
-        final String guid = packageElement.getChildText("GUID");
-        final String name = packageElement.getChildText("Name");
+        final String guid = packageElement.getChildText(XML_ELEMENT_NAME_GUID);
+        final String name = packageElement.getChildText(XML_ELEMENT_NAME_NAME);
+
+        if (StringUtils.isBlank(guid))
+        {
+          log.warn("Package "
+                   + (StringUtils.isNotBlank(name) ? "'" + name + "'" : "")
+                   + "without a GUID. Skipping.");
+          continue;
+        }
+        if (StringUtils.isBlank(name))
+        {
+          log.warn("Package "
+                   + (StringUtils.isNotBlank(guid) ? "'" + guid + "'" : "")
+                   + "without a name. Continue without name.");
+        }
+
         final EaEntity packageEntity = new EaEntity(guid, name);
         packages.add(packageEntity);
+      }
+
+      if (packages.isEmpty())
+      {
+        log.info("No packages found in project! Nothing to export: "
+                 + eaProject);
       }
 
       return packages;
     }
     catch (final Exception e)
     {
-      throw new MojoExecutionException("Cannot read packages XML: "
-                                       + packagesXml, e);
+      log.error("Cannot read packages of project " + eaProject + ". Skipping.");
+      return new ArrayList<EaEntity>();
     }
   }
 
