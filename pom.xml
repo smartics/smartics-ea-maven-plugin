@@ -161,6 +161,7 @@
       <groupId>de.smartics.sparxsystems</groupId>
       <artifactId>eaapi</artifactId>
       <version>11.1.1112</version>
+      <scope>provided</scope>
     </dependency>
 
     <!--  ... maven ....................................................... -->
@@ -561,7 +562,7 @@
   <profiles>
     <profile>
       <id>it</id>
-      <!-- mvn -Pit integration-test -Dinvoker.test=multimodule-project -->
+      <!-- mvn -Pit integration-test -Dinvoker.test=export-html-report -->
       <build>
         <defaultGoal>install</defaultGoal>
         <plugins>

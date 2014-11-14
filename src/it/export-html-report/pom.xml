@@ -37,6 +37,13 @@
             </configuration>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>de.smartics.sparxsystems</groupId>
+            <artifactId>eaapi</artifactId>
+            <version>11.1.1112</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
