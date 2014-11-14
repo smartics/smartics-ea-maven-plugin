@@ -41,6 +41,17 @@
           The libraries and licenses for those libraries used by this project
           are listed under <a href="dependencies.html">Project Dependencies</a>.
         </p>
+        <p>
+          Please not that this <a href="license.xml">project's license</a> does
+          only apply to the artifacts created directly by this project, not its
+          dependencies.
+        </p>
+      </subsection>
+      <subsection name="Tools">
+        <p>
+          The tools used by this project
+          are listed under <a href="plugin-management.html">Project Plugin Management</a>.
+        </p>
       </subsection>
     </section>
   </body>
