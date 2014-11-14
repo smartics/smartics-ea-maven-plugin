@@ -18,7 +18,7 @@ package de.smartics.maven.ea;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
- *
+ * The configuration to control the export of the HTML site.
  */
 public class HtmlExport
 {
@@ -29,29 +29,28 @@ public class HtmlExport
   // --- members --------------------------------------------------------------
 
   /**
-   * The GUID of the package within the project to export. Only used for HTML
-   * site generation.
+   * The GUID of the package within the project to export.
    *
    * @since 1.0
    */
   private String eaPackageGuid;
 
   /**
-   * Export image format for HTML export. Only used for HTML site generation.
+   * Export image format for HTML export.
    *
    * @since 1.0
    */
   private String imageFormat = "PNG";
 
   /**
-   * Export style applied to the export. Only used for HTML site generation.
+   * Export style applied to the export.
    *
    * @since 1.0
    */
   private String style = "<default>";
 
   /**
-   * File name extension for HTML pages. Only used for HTML site generation.
+   * File name extension for HTML pages.
    *
    * @since 1.0
    */
