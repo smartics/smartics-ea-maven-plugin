@@ -15,7 +15,6 @@
  */
 package de.smartics.maven.ea;
 
-
 /**
  * An Enterprise Architect entity.
  */
@@ -28,12 +27,12 @@ final class EaEntity
   // --- members --------------------------------------------------------------
 
   /**
-   * The unique GUID of the entity.
+   * The unique GUID of the entity. The value must not be <code>null</code>.
    */
   private final String guid;
 
   /**
-   * The name of the entity.
+   * The name of the entity. The value may be <code>null</code>.
    */
   private final String name;
 
@@ -44,8 +43,9 @@ final class EaEntity
   /**
    * Default constructor.
    *
-   * @param guid the unique GUID of the entity.
-   * @param name the name of the entity.
+   * @param guid the unique GUID of the entity. The value must not be
+   *          <code>null</code>.
+   * @param name the name of the entity. The value may be <code>null</code>.
    */
   EaEntity(final String guid, final String name)
   {
@@ -64,7 +64,7 @@ final class EaEntity
   /**
    * Returns the unique GUID of the entity.
    *
-   * @return the unique GUID of the entity.
+   * @return the unique GUID of the entity. The value is not <code>null</code>.
    */
   String getGuid()
   {
@@ -74,7 +74,7 @@ final class EaEntity
   /**
    * Returns the name of the entity.
    *
-   * @return the name of the entity.
+   * @return the name of the entity. The value may be <code>null</code>.
    */
   String getName()
   {
@@ -95,7 +95,6 @@ final class EaEntity
   {
     int result = 17;
     result = 37 * result + guid.hashCode();
-    result = 37 * result + name.hashCode();
 
     return result;
   }
@@ -122,12 +121,12 @@ final class EaEntity
 
     final EaEntity other = (EaEntity) object;
 
-    return (guid.equals(other.guid) && name.equals(other.name));
+    return guid.equals(other.guid) && MojoUtils.equals(name, other.name);
   }
 
   @Override
   public String toString()
   {
-    return guid + ": " + name;
+    return guid + (name != null ? ": " + name : "");
   }
 }

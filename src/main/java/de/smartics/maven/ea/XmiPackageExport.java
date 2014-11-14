@@ -15,14 +15,16 @@
  */
 package de.smartics.maven.ea;
 
-import java.io.File;
-
-import org.apache.maven.plugin.MojoExecutionException;
+import org.sparx.EnumXMIType;
 
 /**
- * Utilities uses by the Mojos of this project.
+ * Stores the configuration the the XMI package export.
+ *
+ * @see http
+ *      ://www.sparxsystems.com/enterprise_architect_user_guide/9.3/automation
+ *      /project_2.html
  */
-final class MojoUtils
+public class XmiPackageExport
 {
   // ********************************* Fields *********************************
 
@@ -30,14 +32,28 @@ final class MojoUtils
 
   // --- members --------------------------------------------------------------
 
+  private String xmiTypeId;
+
+  private EnumXMIType xmiType;
+
+  private int diagramXml = 2;
+
+  private int diagramImage = 3;
+
+  private int formatXml = 0;
+
+  private int useDtd = 0;
+
+  private int xmiFlags = 1;
+
   // ****************************** Initializer *******************************
 
   // ****************************** Constructors ******************************
 
   /**
-   * Utility class.
+   * Default constructor.
    */
-  private MojoUtils()
+  public XmiPackageExport()
   {
   }
 
@@ -47,43 +63,62 @@ final class MojoUtils
 
   // --- init -----------------------------------------------------------------
 
+  public void init() throws IllegalArgumentException
+  {
+    this.xmiType = asXmiType();
+  }
+
+  private EnumXMIType asXmiType() throws IllegalArgumentException
+  {
+    if (this.xmiTypeId == null)
+    {
+      return EnumXMIType.xmiEADefault;
+    }
+    final EnumXMIType xmiType = EnumXMIType.valueOf(this.xmiTypeId);
+    return xmiType;
+  }
+
   // --- get&set --------------------------------------------------------------
 
   // --- business -------------------------------------------------------------
 
-  /**
-   * Ensures that the given directory is present and if not, creates it.
-   *
-   * @param directory the directory to be created.
-   * @throws MojoExecutionException if the directory is not present and cannot
-   *           be created.
-   */
-  static void provideMojoDirectory(final File directory)
-    throws MojoExecutionException
+  public EnumXMIType getXmiType()
   {
-    if (!directory.exists())
-    {
-      final boolean created = directory.mkdirs();
-      if (!created && !directory.exists())
-      {
-        throw new MojoExecutionException("Cannot create directory: "
-                                         + directory.getAbsolutePath());
-      }
-    }
+    return xmiType;
   }
 
-  static boolean equals(final Object o1, final Object o2)
+  public int getDiagramXml()
   {
-    if (o1 == null)
-    {
-      return o2 == null;
-    }
-    else
-    {
-      return o1.equals(o2);
-    }
+    return diagramXml;
+  }
+
+  public int getDiagramImage()
+  {
+    return diagramImage;
+  }
+
+  public int getFormatXml()
+  {
+    return formatXml;
+  }
+
+  public int getUseDtd()
+  {
+    return useDtd;
+  }
+
+  public int getXmiFlags()
+  {
+    return xmiFlags;
   }
 
   // --- object basics --------------------------------------------------------
 
+  @Override
+  public String toString()
+  {
+    return "xmiType=" + xmiTypeId + ", diagramXml=" + diagramXml
+           + ", diagramImage=" + diagramImage + ", formatXml=" + formatXml
+           + ", useDtd=" + useDtd + ", xmiFlags=" + xmiFlags;
+  }
 }

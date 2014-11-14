@@ -31,9 +31,13 @@
             </goals>
             <phase>pre-site</phase>
             <configuration>
+              <verbose>true</verbose>
               <eaProjectRepositoryFile>${basedir}/input/test.eap</eaProjectRepositoryFile>
               <!-- <eaPackageGuid>{112549AE-E0BE-4ad7-95DD-4750B0D76EE7}</eaPackageGuid> -->
               <generateHtmlSite>true</generateHtmlSite>
+              <xmiPackageExportConfig>
+                <diagramImage>2</diagramImage>
+              </xmiPackageExportConfig>
             </configuration>
           </execution>
         </executions>

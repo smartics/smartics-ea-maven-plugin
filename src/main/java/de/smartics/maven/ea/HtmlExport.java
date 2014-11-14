@@ -15,14 +15,12 @@
  */
 package de.smartics.maven.ea;
 
-import java.io.File;
-
-import org.apache.maven.plugin.MojoExecutionException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
- * Utilities uses by the Mojos of this project.
+ *
  */
-final class MojoUtils
+public class HtmlExport
 {
   // ********************************* Fields *********************************
 
@@ -30,14 +28,43 @@ final class MojoUtils
 
   // --- members --------------------------------------------------------------
 
+  /**
+   * The GUID of the package within the project to export. Only used for HTML
+   * site generation.
+   *
+   * @since 1.0
+   */
+  private String eaPackageGuid;
+
+  /**
+   * Export image format for HTML export. Only used for HTML site generation.
+   *
+   * @since 1.0
+   */
+  private String imageFormat = "PNG";
+
+  /**
+   * Export style applied to the export. Only used for HTML site generation.
+   *
+   * @since 1.0
+   */
+  private String style = "<default>";
+
+  /**
+   * File name extension for HTML pages. Only used for HTML site generation.
+   *
+   * @since 1.0
+   */
+  private String fileNameExtension = ".html";
+
   // ****************************** Initializer *******************************
 
   // ****************************** Constructors ******************************
 
   /**
-   * Utility class.
+   * Default constructor.
    */
-  private MojoUtils()
+  public HtmlExport()
   {
   }
 
@@ -49,41 +76,39 @@ final class MojoUtils
 
   // --- get&set --------------------------------------------------------------
 
+  public String getEaPackageGuid()
+  {
+    return eaPackageGuid;
+  }
+
+  public String getImageFormat()
+  {
+    return imageFormat;
+  }
+
+  public String getStyle()
+  {
+    return style;
+  }
+
+  public String getFileNameExtension()
+  {
+    return fileNameExtension;
+  }
+
+  public boolean hasEaPackageGuid()
+  {
+    return StringUtils.isNotBlank(eaPackageGuid);
+  }
+
   // --- business -------------------------------------------------------------
-
-  /**
-   * Ensures that the given directory is present and if not, creates it.
-   *
-   * @param directory the directory to be created.
-   * @throws MojoExecutionException if the directory is not present and cannot
-   *           be created.
-   */
-  static void provideMojoDirectory(final File directory)
-    throws MojoExecutionException
-  {
-    if (!directory.exists())
-    {
-      final boolean created = directory.mkdirs();
-      if (!created && !directory.exists())
-      {
-        throw new MojoExecutionException("Cannot create directory: "
-                                         + directory.getAbsolutePath());
-      }
-    }
-  }
-
-  static boolean equals(final Object o1, final Object o2)
-  {
-    if (o1 == null)
-    {
-      return o2 == null;
-    }
-    else
-    {
-      return o1.equals(o2);
-    }
-  }
 
   // --- object basics --------------------------------------------------------
 
+  @Override
+  public String toString()
+  {
+    return "eaPackageGuid=" + eaPackageGuid + ", imageFormat=" + imageFormat
+           + ", style=" + style + ", fileNameExtension=" + fileNameExtension;
+  }
 }

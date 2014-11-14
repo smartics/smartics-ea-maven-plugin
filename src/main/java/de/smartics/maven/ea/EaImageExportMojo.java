@@ -24,7 +24,6 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.util.StringUtils;
 import org.sparx.Project;
 import org.sparx.Repository;
 
@@ -58,48 +57,15 @@ public class EaImageExportMojo extends AbstractMojo
    * @since 1.0
    */
   @Parameter(defaultValue = "${project.reporting.outputDirectory}/model")
-  private File reportTargetFolder;
+  private File htmlSiteTargetFolder;
 
   /**
-   * The target folder for the model images.
+   * The target folder for the model images. Only used for XMI packages export.
    *
    * @since 1.0
    */
-  @Parameter(defaultValue = "${project.reporting.outputDirectory}/xmi/Images")
-  private File imagesTargetFolder;
-
-  /**
-   * The GUID of the package within the project to export. Only used for HTML
-   * site generation.
-   *
-   * @since 1.0
-   */
-  @Parameter
-  private String eaPackageGuid;
-
-  /**
-   * Export image format for HTML export. Only used for HTML site generation.
-   *
-   * @since 1.0
-   */
-  @Parameter(defaultValue = "PNG")
-  private String htmlExportImageFormat;
-
-  /**
-   * Export style applied to the export. Only used for HTML site generation.
-   *
-   * @since 1.0
-   */
-  @Parameter(defaultValue = "<default>")
-  private String htmlExportStyle;
-
-  /**
-   * File name extension for HTML pages. Only used for HTML site generation.
-   *
-   * @since 1.0
-   */
-  @Parameter(defaultValue = ".html")
-  private String htmlExportFileNameExtension;
+  @Parameter(defaultValue = "${project.reporting.outputDirectory}/xmi/images")
+  private File xmiImagesTargetFolder;
 
   /**
    * Set to <code>true</code> to generate the HTML report site with the
@@ -113,14 +79,41 @@ public class EaImageExportMojo extends AbstractMojo
   private boolean generateHtmlSite;
 
   /**
-   * Set to <code>true</code> to generate the images for the Enterprise
-   * Architect diagrams. If set on the command line use
-   * <code>-Dsmartics-ea.generate-images</code>.
+   * Provides information to control the export of the HTML site.
    *
    * @since 1.0
    */
-  @Parameter(property = "smartics-ea.generate-images", defaultValue = "true")
-  private boolean generateImages;
+  @Parameter
+  private HtmlExport htmlExportConfig;
+
+  /**
+   * Set to <code>true</code> to generate the images for the Enterprise
+   * Architect diagrams (XMI export). If set on the command line use
+   * <code>-Dsmartics-ea.generate-xmi</code>.
+   *
+   * @since 1.0
+   */
+  @Parameter(property = "smartics-ea.generate-xmi", defaultValue = "true")
+  private boolean generateXmi;
+
+  /**
+   * Provides information to control the export of packages via XMI. Please
+   * refer to <a href=
+   * "http://www.sparxsystems.com/enterprise_architect_user_guide/9.3/automation/project_2.html"
+   * ></a> for details.
+   *
+   * @since 1.0
+   */
+  @Parameter
+  private XmiPackageExport xmiPackageExportConfig;
+
+  /**
+   * The encoding provided by the EA interface for their XML files.
+   *
+   * @since 1.0
+   */
+  @Parameter(defaultValue = "UTF-8")
+  private String eaXmlFileEncoding;
 
   /**
    * A simple flag to skip the execution of this MOJO. If set on the command
@@ -164,23 +157,57 @@ public class EaImageExportMojo extends AbstractMojo
       return;
     }
 
+    provideDefaultConfig();
+
     runExport();
+  }
+
+  private void provideDefaultConfig()
+  {
+    if (htmlExportConfig == null)
+    {
+      htmlExportConfig = new HtmlExport();
+    }
+
+    if (xmiPackageExportConfig == null)
+    {
+      xmiPackageExportConfig = new XmiPackageExport();
+    }
+
+    xmiPackageExportConfig.init();
+
+    final Log log = getLog();
+    if (generateHtmlSite)
+    {
+      if (verbose) log.info("HTML config: " + htmlExportConfig);
+    }
+    if (generateXmi)
+    {
+      if (verbose) log.info("XMI config: " + xmiPackageExportConfig);
+    }
   }
 
   private void runExport() throws MojoExecutionException
   {
     final Repository repository = openRepository();
+    Project project = null;
     try
     {
-      final Project project = repository.GetProjectInterface();
+      project = repository.GetProjectInterface();
       final Ea facade =
-          new Ea(getLog(), project, imagesTargetFolder.getAbsolutePath());
+          new Ea(getLog(), eaProjectRepositoryFile.getAbsolutePath(), project,
+              xmiImagesTargetFolder.getAbsolutePath(), eaXmlFileEncoding,
+              xmiPackageExportConfig, verbose);
 
       exportHtmlSite(project, facade);
       exportImages(facade);
     }
     finally
     {
+      if (project != null)
+      {
+        project.Exit();
+      }
       repository.CloseFile();
     }
   }
@@ -188,17 +215,19 @@ public class EaImageExportMojo extends AbstractMojo
   private void exportHtmlSite(final Project project, final Ea facade)
     throws MojoExecutionException
   {
-    final boolean hasEaPackageGuid = StringUtils.isNotBlank(eaPackageGuid);
+    final boolean hasEaPackageGuid =
+        htmlExportConfig != null && htmlExportConfig.hasEaPackageGuid();
     if (generateHtmlSite || hasEaPackageGuid)
     {
-      MojoUtils.provideMojoDirectory(reportTargetFolder);
-      final String exportFolder = reportTargetFolder.getAbsolutePath();
+      MojoUtils.provideMojoDirectory(htmlSiteTargetFolder);
+      final String exportFolder = htmlSiteTargetFolder.getAbsolutePath();
 
       if (hasEaPackageGuid)
       {
-        project
-            .RunHTMLReport(eaPackageGuid, exportFolder, htmlExportImageFormat,
-                htmlExportStyle, htmlExportFileNameExtension);
+        project.RunHTMLReport(htmlExportConfig.getEaPackageGuid(),
+            exportFolder, htmlExportConfig.getImageFormat(),
+            htmlExportConfig.getStyle(),
+            htmlExportConfig.getFileNameExtension());
       }
       else
       {
@@ -206,8 +235,8 @@ public class EaImageExportMojo extends AbstractMojo
         {
           final String eaPackageGuid = eaProject.getGuid();
           project.RunHTMLReport(eaPackageGuid, exportFolder,
-              htmlExportImageFormat, htmlExportStyle,
-              htmlExportFileNameExtension);
+              htmlExportConfig.getImageFormat(), htmlExportConfig.getStyle(),
+              htmlExportConfig.getFileNameExtension());
         }
       }
     }
@@ -215,9 +244,9 @@ public class EaImageExportMojo extends AbstractMojo
 
   private void exportImages(final Ea facade) throws MojoExecutionException
   {
-    if (generateImages)
+    if (generateXmi)
     {
-      MojoUtils.provideMojoDirectory(imagesTargetFolder);
+      MojoUtils.provideMojoDirectory(xmiImagesTargetFolder);
       facade.exportImages();
     }
   }
