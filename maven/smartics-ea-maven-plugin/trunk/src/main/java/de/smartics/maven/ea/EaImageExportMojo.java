@@ -100,7 +100,7 @@ public class EaImageExportMojo extends AbstractMojo
    * Provides information to control the export of packages via XMI. Please
    * refer to <a href=
    * "http://www.sparxsystems.com/enterprise_architect_user_guide/9.3/automation/project_2.html"
-   * ></a> for details.
+   * >Project Interface</a> for details.
    *
    * @since 1.0
    */
