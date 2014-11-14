@@ -29,7 +29,8 @@ public class HtmlExport
   // --- members --------------------------------------------------------------
 
   /**
-   * The GUID of the package within the project to export.
+   * The GUID of the package within the project to export. If not specified, the
+   * plugin uses the list of project GUIDs contained in the EAP file.
    *
    * @since 1.0
    */
