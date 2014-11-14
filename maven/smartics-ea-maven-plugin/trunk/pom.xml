@@ -120,6 +120,7 @@
     <repo-download-url>${repo-url}/service/local/artifact/maven/redirect</repo-download-url>
 
     <webroot-projects>http://www.smartics.de/projects</webroot-projects>
+    <wiki-url>https://www.smartics.eu/confluence</wiki-url>
 
     <!-- Project settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
