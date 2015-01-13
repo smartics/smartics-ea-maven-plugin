@@ -16,6 +16,7 @@
 package de.smartics.maven.ea;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -199,8 +200,9 @@ public class EaImageExportMojo extends AbstractMojo
               xmiImagesTargetFolder.getAbsolutePath(), eaXmlFileEncoding,
               xmiPackageExportConfig, verbose);
 
-      exportHtmlSite(project, facade);
-      exportImages(facade);
+      final List<EaEntity> projects = facade.readProjects();
+      exportHtmlSite(project, facade, projects);
+      exportImages(facade, projects);
     }
     finally
     {
@@ -212,8 +214,8 @@ public class EaImageExportMojo extends AbstractMojo
     }
   }
 
-  private void exportHtmlSite(final Project project, final Ea facade)
-    throws MojoExecutionException
+  private void exportHtmlSite(final Project project, final Ea facade,
+      final List<EaEntity> projects) throws MojoExecutionException
   {
     final boolean hasEaPackageGuid =
         htmlExportConfig != null && htmlExportConfig.hasEaPackageGuid();
@@ -231,7 +233,7 @@ public class EaImageExportMojo extends AbstractMojo
       }
       else
       {
-        for (final EaEntity eaProject : facade.readProjects())
+        for (final EaEntity eaProject : projects)
         {
           final String projectGuid = eaProject.getGuid();
           final File projectExportFolder =
@@ -246,12 +248,13 @@ public class EaImageExportMojo extends AbstractMojo
     }
   }
 
-  private void exportImages(final Ea facade) throws MojoExecutionException
+  private void exportImages(final Ea facade, final List<EaEntity> projects)
+    throws MojoExecutionException
   {
     if (generateXmi)
     {
       MojoUtils.provideMojoDirectory(xmiImagesTargetFolder);
-      facade.exportImages();
+      facade.exportImages(projects);
     }
   }
 
