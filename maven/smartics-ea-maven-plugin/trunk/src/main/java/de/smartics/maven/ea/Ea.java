@@ -98,6 +98,12 @@ final class Ea
   void exportImages() throws MojoExecutionException
   {
     final List<EaEntity> projects = readProjects();
+    exportImages(projects);
+  }
+
+  void exportImages(final List<EaEntity> projects)
+    throws MojoExecutionException
+  {
     for (final EaEntity eaProject : projects)
     {
       if (verbose) log.info("Start export of project " + eaProject);
