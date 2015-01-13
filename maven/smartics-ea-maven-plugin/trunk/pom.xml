@@ -5,7 +5,7 @@
 
   <groupId>de.smartics.maven.plugin</groupId>
   <artifactId>smartics-ea-maven-plugin</artifactId>
-  <version>1.0.0-beta-2-SNAPSHOT</version>
+  <version>1.0.0-beta-2</version>
   <packaging>maven-plugin</packaging>
 
   <name>${project.artifactId}</name>
@@ -67,9 +67,9 @@
  -->
 
   <scm>
-    <connection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</connection>
-    <developerConnection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</developerConnection>
-    <url>https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</url>
+    <connection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-2</connection>
+    <developerConnection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-2</developerConnection>
+    <url>https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/tags/smartics-ea-maven-plugin-1.0.0-beta-2</url>
   </scm>
 
   <distributionManagement>
