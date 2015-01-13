@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 smartics, Kronseder & Reiner GmbH
+ * Copyright 2014-2015 smartics, Kronseder & Reiner GmbH
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package de.smartics.maven.ea;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.sparx.Project;
 
@@ -95,10 +97,12 @@ final class Ea
 
   void exportImages() throws MojoExecutionException
   {
-    for (final EaEntity eaProject : readProjects())
+    final List<EaEntity> projects = readProjects();
+    for (final EaEntity eaProject : projects)
     {
       if (verbose) log.info("Start export of project " + eaProject);
-      for (final EaEntity eaPackage : readPackages(eaProject))
+      final List<EaEntity> packages = readPackages(eaProject);
+      for (final EaEntity eaPackage : packages)
       {
         exportImages(eaPackage);
       }
@@ -175,52 +179,80 @@ final class Ea
   private List<EaEntity> readPackages(final EaEntity eaProject)
     throws MojoExecutionException
   {
-    final String packagesXml = this.project.EnumPackages(eaProject.getGuid());
+    final List<EaEntity> packages = new ArrayList<EaEntity>();
+    final String guid = eaProject.getGuid();
     try
     {
-      final SAXBuilder builder = new SAXBuilder();
-      final InputStream in =
-          new ByteArrayInputStream(packagesXml.getBytes(xmlEncoding));
-      final Document document = builder.build(in);
-      final Element root = document.getRootElement();
-
-      final List<EaEntity> packages = new ArrayList<EaEntity>();
-      for (final Element packageElement : root.getChildren("Package"))
-      {
-        final String guid = packageElement.getChildText(XML_ELEMENT_NAME_GUID);
-        final String name = packageElement.getChildText(XML_ELEMENT_NAME_NAME);
-
-        if (StringUtils.isBlank(guid))
-        {
-          log.warn("Package "
-                   + (StringUtils.isNotBlank(name) ? "'" + name + "'" : "")
-                   + "without a GUID. Skipping.");
-          continue;
-        }
-        if (StringUtils.isBlank(name))
-        {
-          log.warn("Package "
-                   + (StringUtils.isNotBlank(guid) ? "'" + guid + "'" : "")
-                   + "without a name. Continue without name.");
-        }
-
-        final EaEntity packageEntity = new EaEntity(guid, name);
-        packages.add(packageEntity);
-      }
-
+      addPackages(packages, guid);
       if (packages.isEmpty())
       {
-        log.info("No packages found in project! Nothing to export: "
-                 + eaProject);
+        log.info("No packages found in project! Nothing to export: " + guid);
       }
-
-      return packages;
     }
     catch (final Exception e)
     {
-      log.error("Cannot read packages of project " + eaProject + ". Skipping.");
-      return new ArrayList<EaEntity>();
+      log.error("Cannot read packages of project " + guid + ". Skipping.");
     }
+
+    return packages;
+  }
+
+  private void addPackages(final List<EaEntity> packages, final String guid)
+    throws JDOMException, IOException
+  {
+    final String packagesXml = this.project.EnumPackages(guid);
+    if (StringUtils.isBlank(packagesXml))
+    {
+      return;
+    }
+    final SAXBuilder builder = new SAXBuilder();
+    final InputStream in =
+        new ByteArrayInputStream(packagesXml.getBytes(xmlEncoding));
+    final Document document = builder.build(in);
+    final Element root = document.getRootElement();
+
+    for (final Element packageElement : root.getChildren("Package"))
+    {
+      final EaEntity packageEntity = createPackageEntity(packageElement);
+      if (packageEntity == null)
+      {
+        continue;
+      }
+
+      packages.add(packageEntity);
+
+      try
+      {
+        addPackages(packages, packageEntity.getGuid());
+      }
+      catch (final Exception e)
+      {
+        // continue
+      }
+    }
+  }
+
+  private EaEntity createPackageEntity(final Element packageElement)
+  {
+    final String guid = packageElement.getChildText(XML_ELEMENT_NAME_GUID);
+    final String name = packageElement.getChildText(XML_ELEMENT_NAME_NAME);
+
+    if (StringUtils.isBlank(guid))
+    {
+      log.warn("Package "
+               + (StringUtils.isNotBlank(name) ? "'" + name + "'" : "")
+               + "without a GUID. Skipping.");
+      return null;
+    }
+    if (StringUtils.isBlank(name))
+    {
+      log.warn("Package "
+               + (StringUtils.isNotBlank(guid) ? "'" + guid + "'" : "")
+               + "without a name. Continue without name.");
+    }
+
+    final EaEntity packageEntity = new EaEntity(guid, name);
+    return packageEntity;
   }
 
   // --- object basics --------------------------------------------------------

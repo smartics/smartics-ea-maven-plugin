@@ -220,10 +220,10 @@ public class EaImageExportMojo extends AbstractMojo
     if (generateHtmlSite || hasEaPackageGuid)
     {
       MojoUtils.provideMojoDirectory(htmlSiteTargetFolder);
-      final String exportFolder = htmlSiteTargetFolder.getAbsolutePath();
 
       if (hasEaPackageGuid)
       {
+        final String exportFolder = htmlSiteTargetFolder.getAbsolutePath();
         project.RunHTMLReport(htmlExportConfig.getEaPackageGuid(),
             exportFolder, htmlExportConfig.getImageFormat(),
             htmlExportConfig.getStyle(),
@@ -233,8 +233,12 @@ public class EaImageExportMojo extends AbstractMojo
       {
         for (final EaEntity eaProject : facade.readProjects())
         {
-          final String eaPackageGuid = eaProject.getGuid();
-          project.RunHTMLReport(eaPackageGuid, exportFolder,
+          final String projectGuid = eaProject.getGuid();
+          final File projectExportFolder =
+              new File(htmlSiteTargetFolder, projectGuid);
+          MojoUtils.provideMojoDirectory(projectExportFolder);
+          project.RunHTMLReport(projectGuid,
+              projectExportFolder.getAbsolutePath(),
               htmlExportConfig.getImageFormat(), htmlExportConfig.getStyle(),
               htmlExportConfig.getFileNameExtension());
         }

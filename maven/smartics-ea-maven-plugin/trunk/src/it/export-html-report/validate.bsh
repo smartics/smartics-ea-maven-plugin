@@ -1,0 +1,94 @@
+/*
+ * Copyright 2014-2015 smartics, Kronseder & Reiner GmbH
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import java.io.*;
+
+File siteFolder = new File(basedir, "target/site");
+
+
+// *** HTML report ************************************************************
+
+File modelFolder = new File(siteFolder, "model");
+
+File model1 = new File(modelFolder, "EAID_112549AE_E0BE_4ad7_95DD_4750B0D76EE7");
+if (!model1.exists())
+{
+	throw new FileNotFoundException("Could not find HTML model 1: " + model1);
+}
+
+File model2 = new File(modelFolder, "EAID_3F89B4A9_3D79_4d2b_9289_140E997AE052");
+if (!model2.exists())
+{
+	throw new FileNotFoundException("Could not find HTML model 2: " + model2);
+}
+
+
+// *** Images report **********************************************************
+
+File imagesFolder = new File(siteFolder, "xmi/images");
+
+File image1 = new File(imagesFolder, "EAID_3154DAC5_6932_4dbd_8FC4_8C0881CF6A14.gif");
+if (!image1.exists())
+{
+	throw new FileNotFoundException("Could not find use case image: " + image1);
+}
+
+File image2 = new File(imagesFolder, "EAID_3A57E0DB_584C_43a9_AAA3_A3F739EB2F04.gif");
+if (!image2.exists())
+{
+	throw new FileNotFoundException("Could not find component view image: " + image2);
+}
+
+File image3 = new File(imagesFolder, "EAID_4C0C5EF0_A04B_4f8f_8E82_619FD2FEBE7A.gif");
+if (!image3.exists())
+{
+	throw new FileNotFoundException("Could not find test model image: " + image3);
+}
+
+File image4 = new File(imagesFolder, "EAID_592D293C_924F_4d40_BDBD_6EA7E4FBB3E7.gif");
+if (!image4.exists())
+{
+	throw new FileNotFoundException("Could not find component test 1 image: " + image4);
+}
+
+File image5 = new File(imagesFolder, "EAID_686E388F_352B_41b0_931B_07F788C428A6.gif");
+if (!image5.exists())
+{
+	throw new FileNotFoundException("Could not find requirements image: " + image5);
+}
+
+File image6 = new File(imagesFolder, "EAID_C1EC68B8_89A0_41d8_8D3D_8C1A498B36A3.gif");
+if (!image6.exists())
+{
+	throw new FileNotFoundException("Could not find deployment image: " + image6);
+}
+
+File image7 = new File(imagesFolder, "EAID_CE54E6DA_D899_493d_86CE_0690DA911EA1.gif");
+if (!image7.exists())
+{
+	throw new FileNotFoundException("Could not find logical view image: " + image7);
+}
+
+File image8 = new File(imagesFolder, "EAID_D0F112BE_4DEB_40fe_8755_006B75DF026C.gif");
+if (!image8.exists())
+{
+	throw new FileNotFoundException("Could not find dynamic view image: " + image8);
+}
+
+File image9 = new File(imagesFolder, "EAID_F408A7C0_B1B2_4cc0_9BD9_1ABEF97064E1.gif");
+if (!image9.exists())
+{
+	throw new FileNotFoundException("Could not find analysis view image: " + image9);
+}
