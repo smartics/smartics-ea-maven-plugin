@@ -59,9 +59,10 @@
  -->
 
   <scm>
-    <connection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</connection>
-    <developerConnection>scm:svn:https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</developerConnection>
-    <url>https://www.smartics.eu/svn/public/maven/smartics-ea-maven-plugin/trunk</url>
+    <connection>scm:git:git@github.com:smartics/smartics-ea-maven-plugin</connection>
+    <developerConnection>scm:git:git@github.com:smartics/smartics-ea-maven-plugin</developerConnection>
+    <url>https://github.com/smartics/smartics-ea-maven-plugin</url>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>
