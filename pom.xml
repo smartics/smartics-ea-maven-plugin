@@ -5,7 +5,7 @@
 
   <groupId>de.smartics.maven.plugin</groupId>
   <artifactId>smartics-ea-maven-plugin</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>smartics Enterprise Architect Maven Plugin</name>
