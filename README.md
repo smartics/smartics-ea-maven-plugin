@@ -14,5 +14,6 @@ This plugin for [Maven] (http://maven.apache.org/) exports images and the HTML s
 
 Please visit
 
-  * the [plugin's homepage] (https://www.smartics.eu/confluence/display/EAMP/) - for more information on how to use this plugin.
-  * the [plugin's report site] (https://www.smartics.eu/smartics-ea-maven-plugin/) - for reporting information on the plugin.
+* the [plugin's homepage] (https://www.smartics.eu/confluence/display/EAMP/) - for more information on how to use this plugin.
+* the [plugin's report site] (https://www.smartics.eu/smartics-ea-maven-plugin/) - for reporting information on the plugin.
+* a [sample project] (https://github.com/smartics/smartics-ea-maven-plugin-docs) - how to use this plugin to create images to be transcluded from a documentation site.
