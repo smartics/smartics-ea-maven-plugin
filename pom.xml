@@ -5,7 +5,7 @@
 
   <groupId>de.smartics.maven.plugin</groupId>
   <artifactId>smartics-ea-maven-plugin</artifactId>
-  <version>1.0.0-beta-3-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>smartics Enterprise Architect Maven Plugin</name>
@@ -150,7 +150,7 @@
     <version.hudson-maven-plugin>0.2.8</version.hudson-maven-plugin>
     <version.config-smartics-hudson>0.3.0</version.config-smartics-hudson>
 
-    <version.buildmetadata-maven-plugin>1.4.0</version.buildmetadata-maven-plugin>
+    <version.buildmetadata-maven-plugin>1.5.0.RC1</version.buildmetadata-maven-plugin>
 
     <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
     <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
@@ -158,7 +158,7 @@
     <version.maven-resources-plugin>2.6</version.maven-resources-plugin>
     <version.maven-deploy-plugin>2.8.1</version.maven-deploy-plugin>
     <version.maven-jar-plugin>2.4</version.maven-jar-plugin>
-    <version.maven-release-plugin>2.4.2</version.maven-release-plugin>
+    <version.maven-release-plugin>2.5.2</version.maven-release-plugin>
     <version.maven-install-plugin>2.5.1</version.maven-install-plugin>
     <version.maven-scm-plugin>1.8.1</version.maven-scm-plugin>
     <version.maven-project-info-reports-plugin>2.7</version.maven-project-info-reports-plugin>
