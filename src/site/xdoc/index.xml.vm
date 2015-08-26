@@ -38,7 +38,7 @@
     <section name="Introduction">
       <subsection name="Overview">
         <p>
-          This <a href="http://maven.apache.org/">Maven</a> plugin exports images
+          This plugin for <a href="http://maven.apache.org/">Maven</a> exports images
           and the HTML site from your
           <a href="http://www.sparxsystems.com/products/ea/index.html">Enterprise Architect</a>
           installation.
