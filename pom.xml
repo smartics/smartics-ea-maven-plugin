@@ -165,10 +165,12 @@
     <version.versions-maven-plugin>2.1</version.versions-maven-plugin>
     <version.maven-site-plugin>3.3</version.maven-site-plugin>
     <version.maven-license-plugin>1.9.0</version.maven-license-plugin>
+    <version.maven-javadoc-plugin>2.10.3</version.maven-javadoc-plugin>
+    <version.maven-source-plugin>2.4</version.maven-source-plugin>
 
     <!--  Dependency versions -->
     <version.maven>3.1.0</version.maven>
-    <version.maven-plugin-plugin>3.2</version.maven-plugin-plugin>
+    <version.maven-plugin-plugin>3.4</version.maven-plugin-plugin>
   </properties>
 
   <dependencies>
@@ -423,6 +425,57 @@
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${version.maven-source-plugin}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${version.maven-javadoc-plugin}</version>
+          <configuration>
+            <!-- <detectLinks>true</detectLinks> -->
+            <bottom>
+              <![CDATA[Copyright &copy; ${build.copyright.year} <a href="http://www.smartics.de/">Kronseder &amp; Reiner GmbH - smartics</a>. All Rights Reserved.]]>
+            </bottom>
+            <tags>
+              <tag>
+                <name>todo</name>
+                <placement>a</placement>
+                <head>To Do:</head>
+              </tag>
+              <tag>
+                <name>impl</name>
+                <placement>a</placement>
+                <head>Implementation Note:</head>
+              </tag>
+
+              <tag>
+                <name>goal</name>
+                <placement>a</placement>
+                <head>maven-goal:</head>
+              </tag>
+              <tag>
+                <name>phase</name>
+                <placement>a</placement>
+                <head>maven-phase:</head>
+              </tag>
+              <tag>
+                <name>requiresProject</name>
+                <placement>a</placement>
+                <head>maven-requiresProject:</head>
+              </tag>
+              <tag>
+                <name>description</name>
+                <placement>a</placement>
+                <head>maven-description:</head>
+              </tag>
+            </tags>
           </configuration>
         </plugin>
       </plugins>
