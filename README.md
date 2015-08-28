@@ -3,7 +3,7 @@ smartics Enterprise Architect Maven Plugin
 
 <img align="right" src="https://raw.githubusercontent.com/smartics/smartics-ea-maven-plugin/master/src/site/resources/images/logos/icon-128x128.png" alt="Project Logo" hspace="5">
 
-Interacts with a model specified in sparx systems' Enterprise Architect. Exports images of the model to be referenced by the documentation.
+Exports images of the model to be referenced by the documentation. Interacts with a model specified in sparx systems' Enterprise Architect. Therefore a licensed version of the EA Java API is required.
 
 ##Overview
 
