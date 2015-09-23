@@ -119,7 +119,6 @@
     <info.server.web>https://www.smartics.eu/confluence/display</info.server.web>
     <info.server.issues>https://www.smartics.eu/jira/projects</info.server.issues>
     <info.server.repo>https://www.smartics.eu/nexus</info.server.repo>
-    <info.server.scm>https://www.smartics.eu/svn/public</info.server.scm>
 
     <info.server.repo.prefix>${info.server.repo}/content</info.server.repo.prefix>
     <info.server.repo.group>${info.server.repo.prefix}/groups/public-group</info.server.repo.group>
@@ -151,7 +150,7 @@
     <version.hudson-maven-plugin>0.2.8</version.hudson-maven-plugin>
     <version.config-smartics-hudson>0.3.0</version.config-smartics-hudson>
 
-    <version.buildmetadata-maven-plugin>1.5.0.RC1</version.buildmetadata-maven-plugin>
+    <version.buildmetadata-maven-plugin>1.6.1</version.buildmetadata-maven-plugin>
 
     <version.maven-compiler-plugin>3.1</version.maven-compiler-plugin>
     <version.maven-clean-plugin>2.5</version.maven-clean-plugin>
@@ -506,7 +505,6 @@
         </executions>
         <configuration>
           <buildDatePattern>dd.MM.yyyy HH:mm:ss</buildDatePattern>
-          <remoteVersion>origin/master</remoteVersion>
         </configuration>
       </plugin>
 
@@ -582,6 +580,31 @@
             <jnlp>XML_STYLE</jnlp>
           </mapping>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/META-INF</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}</directory>
+                  <includes>
+                    <include>COPYRIGHT.txt</include>
+                    <include>LICENSE-*</include>
+                  </includes>
+                  <filtering>false</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
